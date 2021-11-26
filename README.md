@@ -1,3 +1,3 @@
 # trydrf
 
-More advance concepts with working with django restframework
+More advance concepts with working with django rest framework
