@@ -10,6 +10,7 @@ Django = "^3.2.9"
 python-decouple = "^3.5"
 dj-database-url = "^0.5.0"
 Unipath = "^1.1"
+djangorestframework = "^3.12.4"
 
 [tool.poetry.dev-dependencies]
 pywatchman = "^1.4.1"
