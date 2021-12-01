@@ -10,7 +10,6 @@ class StreamPlatformSerializer(serializers.ModelSerializer):
 
 
 class WatchListSerializer(serializers.ModelSerializer):
-    len_name = serializers.SerializerMethodField()
     class Meta:
         model = WatchList
         fields = '__all__'
