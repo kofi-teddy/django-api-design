@@ -1,20 +1,20 @@
-from apps.watchlist.api.serializers import MovieSerializer
-from apps.watchlist.models import Movie
+from apps.watchlist.api.serializers import WatchListSerializer
+from apps.watchlist.models import WatchList
 from rest_framework import serializers, status
 # from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 
-class MovieList(APIView):
+class WatchList(APIView):
 
     def get(self, request):
-        movies = Movie.objects.all()
-        serializer = MovieSerializer(movies, many=True)
+        movies = WatchList.objects.all()
+        serializer = WatchListSerializer(movies, many=True)
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = MovieSerializer(data=request.data)
+        serializer = WatchListSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -22,20 +22,20 @@ class MovieList(APIView):
             return Response(serializer.errors)
 
 
-class MovieDetail(APIView):
+class WatchDetail(APIView):
 
     def get(self, request, pk):
         try:
-            movie = Movie.objects.get(pk=pk)
-        except Movie.DoesNotExist:
-            return Response({'Error': 'Movie not found'}, status=status.HTTP_400_BAD_REQUEST)
+            movie = WatchList.objects.get(pk=pk)
+        except WatchList.DoesNotExist:
+            return Response({'Error': 'Not found'}, status=status.HTTP_400_BAD_REQUEST)
         
-        serializer = MovieSerializer(movie)
+        serializer = WatchListSerializer(movie)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk):
-        movie = Movie.objects.get(pk=pk)
-        serializer = MovieSerializer(data=request.data)
+        movie = WatchList.objects.get(pk=pk)
+        serializer = WatchListSerializer(movie, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -43,7 +43,7 @@ class MovieDetail(APIView):
             return Response(serializer.errors)
 
     def delete(self, request, pk):
-        movie = Movie.objects.get(pk=pk)
+        movie = WatchList.objects.get(pk=pk)
         movie.delete()
         return Response(status=status.HTTP_204_NO_CONTENT) 
 
