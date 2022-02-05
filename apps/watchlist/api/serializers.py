@@ -1,6 +1,6 @@
-from apps.watchlist.models import StreamPlatform, WatchList, Review
 from rest_framework import serializers
 
+from apps.watchlist.models import StreamPlatform, WatchList, Review
 
 class ReviewSerializer(serializers.ModelSerializer):
     review_user = serializers.StringRelatedField(read_only=True)
