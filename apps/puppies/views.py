@@ -8,7 +8,7 @@ from .models import Puppy
 from .serializers import PuppySerializer
 
 
-@api_view(['GET', 'DELETE', 'UPDATE'])
+@api_view(['GET', 'DELETE', 'UPDATE', 'PUT'])
 def get_delete_update_puppy(request, pk):
     try:
         puppy = Puppy.objects.get(pk=pk)
@@ -19,21 +19,29 @@ def get_delete_update_puppy(request, pk):
     if request.method == 'GET':
         serializer = PuppySerializer(puppy)
         return Response(serializer.data)
+
     # delete a single puppy 
     elif request.method == 'DELETE':
         return Response({})
+
     # update details of a single puppy
     elif request.method == 'PUT':
-        return Response({})
+        serializer = PuppySerializer(puppy, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'POST'])
 def get_post_puppies(request):
+
     # get all puppies
     if request.method == 'GET':
         puppies = Puppy.objects.all()
         serializer = PuppySerializer(puppies, many=True)
         return Response(serializer.data)
+
     # insert a new record for a puppy
     elif request.method == 'POST':
         data = {
