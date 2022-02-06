@@ -136,6 +136,33 @@ class UpdateSinglePuppyTest(TestCase):
     def test_invalid_update_puppy(self):
         response = client.put(
             reverse('get_delete_update_puppy', kwargs={'pk': self.akos.pk}),
-            data=json.dumps(self.invalid_payload)
+            data=json.dumps(self.invalid_payload),
+            content_type='application/json'
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteSinglePuppyTest(TestCase):
+    '''
+    Test module for deleting an existing puppy record.
+    '''
+
+    def setUp(self):
+        self.ama = Puppy.objects.create(
+            name='Ama', age=24, breed='Bull Dog', color='Black'
+        )
+        self.akos = Puppy.objects.create(
+            name='Akos', age=24, breed='Gradane', color='Black'
+        )
+
+    def test_valid_delete_puppy(self):
+        response = client.delete(
+            reverse('get_delete_update_puppy', kwargs={'pk': self.ama.pk})
+        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_invalid_delete_puppy(self):
+        response = client.delete(
+            reverse('get_delete_update_puppy', kwargs={'pk': 30})
+        )
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
