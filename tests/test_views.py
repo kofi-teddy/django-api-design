@@ -1,5 +1,5 @@
 import json 
-from rest_framework import TestCase, Client
+from django.test import TestCase, Client
 from rest_framework import status
 from django.urls import reverse
 
