@@ -15,7 +15,6 @@ def get_delete_update_puppy(request, pk):
     except Puppy.DoesNotExist:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-
     # get details of a single puppy
     if request.method == 'GET':
         return Response({})
@@ -31,7 +30,9 @@ def get_delete_update_puppy(request, pk):
 def get_post_puppies(request):
     # get all puppies
     if request.method == 'GET':
-        return Response({})
+        puppies = Puppy.objects.all()
+        serializer = PuppySerializer(puppies, many=True)
+        return Response(serializer.data)
     # insert a new record for a puppy
     elif request.method == 'POST':
         return Response({})
