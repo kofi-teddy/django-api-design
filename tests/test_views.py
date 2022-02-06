@@ -100,3 +100,42 @@ class CreateNewPuppyTest(TestCase):
             content_type='application/json'
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class UpdateSinglePuppyTest(TestCase):
+    '''
+    Testing module for updating an existing puppy record.
+    '''
+
+    def setUp(self):
+        self.ama = Puppy.objects.create(
+            name='Ama', age=24, breed='Bull Dog', color='Black'
+        )
+        self.akos = Puppy.objects.create(name='Akos', age=25, breed='Gradane', color='Black')
+        self.valid_payload = {
+            'name': 'Ama',
+            'age': 24,
+            'breed': 'Labrador', 
+            'color': 'Black',
+        }
+        self.invalid_payload = {
+            'name': '',
+            'age': 25,
+            'breed': 'Labrador', 
+            'color': 'Black',
+        }
+
+    def test_valid_update_puppy(self):
+        response = client.put(
+            reverse('get_delete_update_puppy', kwargs={'pk': self.ama.pk}),
+            data=json.dumps(self.valid_payload),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+    
+    def test_invalid_update_puppy(self):
+        response = client.put(
+            reverse('get_delete_update_puppy', kwargs={'pk': self.akos.pk}),
+            data=json.dumps(self.invalid_payload)
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
